@@ -1,30 +1,69 @@
 <script>
-	export let name;
+  let cells = Array.from({ length: 40 }).map((_, idx) => ({
+    bg: '#fff',
+    id: idx,
+  }));
+
+  let currentColor = '#000';
+
+  const handleColorUpdate = (id) => {
+    cells[id].bg = currentColor;
+  };
+
+  const handleCurrentColorUpdate = (e) => {
+    currentColor = e.target.value;
+  };
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+  <input
+    type="color"
+    class="colorPicker"
+    value={currentColor}
+    on:change={handleCurrentColorUpdate}
+  />
+  <div class="box">
+    {#each cells as cell (cell.id)}
+      <div
+        class="cell"
+        on:click={() => handleColorUpdate(cell.id)}
+        style="background-color: {cell.bg};"
+      />
+    {/each}
+  </div>
 </main>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+  }
+  .box {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    height: 60%;
+    border: 1px solid #000;
+    width: 70%;
+  }
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
+  .cell {
+    border: 1px solid #000;
+    transition: all 100ms linear;
+    cursor: pointer;
+  }
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+  .cell:hover {
+    transform: scale(1.07);
+  }
+
+  .colorPicker {
+    height: 5rem;
+    width: 5rem;
+    margin-bottom: 2rem;
+    padding: 5px;
+  }
 </style>
