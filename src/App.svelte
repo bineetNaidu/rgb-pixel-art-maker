@@ -6,8 +6,10 @@
 
   let currentColor = '#000';
 
-  const handleColorUpdate = (id) => {
-    cells[id].bg = currentColor;
+  const handleColorUpdate = (id) => (e) => {
+    if (e.buttons === 1) {
+      cells[id].bg = currentColor;
+    }
   };
 
   const handleCurrentColorUpdate = (e) => {
@@ -24,9 +26,12 @@
   />
   <div class="box">
     {#each cells as cell (cell.id)}
+      <!-- svelte-ignore a11y-mouse-events-have-key-events -->
       <div
         class="cell"
-        on:click={() => handleColorUpdate(cell.id)}
+        on:mouseover|preventDefault={handleColorUpdate(cell.id)}
+        on:contextmenu={(e) => e.preventDefault()}
+        on:mousedown|preventDefault={handleColorUpdate(cell.id)}
         style="background-color: {cell.bg};"
       />
     {/each}
